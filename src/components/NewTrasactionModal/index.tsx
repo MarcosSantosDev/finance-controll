@@ -1,5 +1,5 @@
 import Modal from 'react-modal'
-import { Heading } from './styles';
+import { Container } from './styles';
 
 interface NewTrasactionModalProps {
   isOpen: boolean;
@@ -14,8 +14,18 @@ const NewTrasactionModal = ({
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
+      overlayClassName="react-modal-overlay"
+      className="react-modal-content"
     >
-      <Heading>Cadastrar transação</Heading>
+      <Container>
+        <h2>Cadastrar transação</h2>
+        <input type="text" placeholder="Título" />
+        <input type="number" placeholder="Valor" />
+        <input type="text" placeholder="Categoria" />
+        <button type="submit">
+          Cadastrar
+        </button>
+      </Container>
     </Modal>
   )
 }
