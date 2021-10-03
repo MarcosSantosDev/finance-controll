@@ -5,7 +5,7 @@ import { Container } from './styles';
 
 const TransactionsTable: React.FC = () => {
   const { transactions } = useContext(TransactionsContext)
-  console.log(transactions);
+
   return (
     <Container>
       <table>
