@@ -21,7 +21,7 @@ const NewTrasactionModal = ({
   const [category, setCategory] = useState<string>('');
   const { createTransation } = useContext(TransactionsContext)
   
-  const handleCreateNewTransaction = (event: FormEvent<HTMLFormElement>) => {
+  const handleCreateNewTransaction = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const newTrasaction: TransactionInput = {
@@ -31,7 +31,9 @@ const NewTrasactionModal = ({
       category,
     }
 
-    createTransation(newTrasaction)
+    await createTransation(newTrasaction)
+
+    onRequestClose()
   }
 
   return (

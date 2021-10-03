@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import api from '../services/api';
 
@@ -12,6 +13,8 @@ export interface Transaction {
 
 export type TransactionInput = Omit<Transaction, 'id' | 'createdAt'>;
 
+export type TransactionBody = Omit<Transaction, 'id'>;
+
 export interface TransactionResponse {
   transactions: Transaction[];
 }
@@ -22,7 +25,7 @@ interface TransactionsProviderProps {
 
 export interface TransactionsContextProps {
   transactions: Transaction[];
-  createTransation: (transaction: TransactionInput) => void
+  createTransation: (transactionInput: TransactionInput) => Promise<void>
 }
 
 export const TransactionsContext = createContext<TransactionsContextProps>(
@@ -32,8 +35,18 @@ export const TransactionsContext = createContext<TransactionsContextProps>(
 export const TransactionsProvider = ({ children }: TransactionsProviderProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  const createTransation = (transaction: TransactionInput) => {
-    api.post('/transactions', transaction)
+  const createTransation = async (transactionInput: TransactionInput) => {
+    const response = await api.post<TransactionBody, AxiosResponse<{ transaction: Transaction }>>('/transactions', {
+      ...transactionInput,
+      createdAt: new Date()
+    });
+
+    const { transaction } = response.data
+
+    setTransactions(transactions => ([
+      ...transactions,
+      transaction
+    ]))
   }
 
   useEffect(() => {
