@@ -1,6 +1,3 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
-
 import moneyImg from '../../assets/logo.svg'
 import { Container, Content } from './styles';
 
