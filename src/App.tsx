@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import Modal from 'react-modal';
 import Header from './components/Header';
 import NewTrasactionModal from './components/NewTrasactionModal';
 import Dashboard from './pages/Dashboard'
 
 import { GlobalStyle } from './styles/global';
+
+Modal.setAppElement('#root')
 
 export function App() {
   const [isNewTrasactionModalOpen, setIsNewTrasactionModalOpen] = useState(false);

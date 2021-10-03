@@ -1,12 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../../services/api'
+import { formatCurrency, formatDate } from '../../utils/format';
 import { Container } from './styles';
 
+interface Transaction {
+  id: number;
+  title: string;
+  type: 'deposit' | 'withDraw';
+  category: string;
+  amount: number;
+  createdAt: Date;
+}
+
+interface TransactionResponse {
+  transactions: Transaction[];
+}
+
+const getTransactionClassByType = (type: 'deposit' | 'withDraw') => {
+  return type === 'deposit' ? 'deposit' : 'withDraw'
+}
+
 const TransactionsTable: React.FC = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
 
   useEffect(() => {
-    api.get('transactions')
-    .then((response) => console.log(response.data))
+    api.get<TransactionResponse>('transactions')
+    .then((response) => response.data)
+    .then((data) => setTransactions(data.transactions))
   }, [])
 
   return (
@@ -21,18 +41,18 @@ const TransactionsTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-        <tr>
-            <td>Desenvolvimento de website</td>
-            <td className="deposit">R$12.000</td>
-            <td>Desenvolvimento</td>
-            <td>30/09/2021</td>
-          </tr>
-          <tr>
-            <td>Aluguel</td>
-            <td className="withDraw">- R$1.700</td>
-            <td>Casa</td>
-            <td>30/09/2021</td>
-          </tr>
+        {
+          transactions.map((transaction) => (
+            <tr key={transaction.id}>
+              <td>{transaction.title}</td>
+              <td className={getTransactionClassByType(transaction.type)}>
+                {formatCurrency(transaction.amount)}
+              </td>
+              <td>{transaction.category}</td>
+              <td>{formatDate(transaction.createdAt)}</td>
+            </tr>
+          ))
+        }
         </tbody>
       </table>
     </Container>
