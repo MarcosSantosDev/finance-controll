@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState, useContext } from 'react';
 import api from '../services/api';
 
 export interface Transaction {
@@ -28,7 +28,7 @@ export interface TransactionsContextProps {
   createTransation: (transactionInput: TransactionInput) => Promise<void>
 }
 
-export const TransactionsContext = createContext<TransactionsContextProps>(
+const TransactionsContext = createContext<TransactionsContextProps>(
   {} as TransactionsContextProps
 )
 
@@ -64,4 +64,9 @@ export const TransactionsProvider = ({ children }: TransactionsProviderProps) =>
       {children}
     </TransactionsContext.Provider>
   )
+}
+
+export const useTransactions = () => {
+  const context = useContext(TransactionsContext)
+  return context
 }

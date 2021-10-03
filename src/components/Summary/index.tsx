@@ -1,9 +1,7 @@
-import React, { useContext } from 'react';
-
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import totalImg from '../../assets/total.svg'
-import { Transaction, TransactionsContext } from '../../context/TransactionsContext';
+import { Transaction, useTransactions } from '../../context/TransactionsContext';
 import { formatCurrency } from '../../utils/format';
 
 import { Container } from './styles';
@@ -39,7 +37,7 @@ const getSummary = (transactions: Transaction[]) => {
 }
 
 const Summary: React.FC = () => {
-  const { transactions } = useContext(TransactionsContext)
+  const { transactions } = useTransactions()
 
   const {
     deposits,
