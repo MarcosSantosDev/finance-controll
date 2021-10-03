@@ -1,8 +1,12 @@
 # v1.0.0
 
+## BREAKING CHANGE
+
 - create project with CRA
 
 # v1.0.1
+
+## Features
 
 - header component;
 - transaction summary component;
