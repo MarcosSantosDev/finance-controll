@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 import Header from './components/Header';
 import NewTrasactionModal from './components/NewTrasactionModal';
 import Dashboard from './pages/Dashboard'
+import { TransactionsProvider } from './context/TransactionsContext'
 
 import { GlobalStyle } from './styles/global';
 
@@ -20,7 +21,7 @@ export function App() {
   }
   
   return (
-    <>
+    <TransactionsProvider>
       <Header handleOpenNewTrasactionModalOpen={handleOpenNewTrasactionModalOpen} />
       <Dashboard />
       <NewTrasactionModal
@@ -28,6 +29,6 @@ export function App() {
         onRequestClose={handleOpenNewTrasactionModalClose}
       />
       <GlobalStyle />
-    </>
+    </TransactionsProvider>
   );
 }

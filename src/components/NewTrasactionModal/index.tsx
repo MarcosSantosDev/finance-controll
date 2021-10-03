@@ -1,11 +1,11 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useContext } from 'react';
 import Modal from 'react-modal'
-import api from '../../services/api'
 
 import closeImg from '../../assets/close.svg'
 import incomeImg from '../../assets/income.svg'
 import outcomeImg from '../../assets/outcome.svg'
 import { Container, TransactionTypesContatiner, RadioBox } from './styles';
+import { TransactionInput, TransactionsContext } from '../../context/TransactionsContext';
 interface NewTrasactionModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -16,21 +16,22 @@ const NewTrasactionModal = ({
   onRequestClose
 }: NewTrasactionModalProps) => {
   const [title, setTitle] = useState<string>('');
-  const [value, setValue] = useState<number>();
-  const [type, setType] = useState<'deposity' | 'withdraw'>('deposity');
-  const [category, setCategory] = useState<string>();
+  const [amount, setAmount] = useState<number>(0);
+  const [type, setType] = useState<'deposit' | 'withdraw'>('deposit');
+  const [category, setCategory] = useState<string>('');
+  const { createTransation } = useContext(TransactionsContext)
   
   const handleCreateNewTransaction = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const newTrasaction = {
+    const newTrasaction: TransactionInput = {
       title,
-      value,
+      amount,
       type,
       category,
     }
 
-    api.post('transactions', newTrasaction)
+    createTransation(newTrasaction)
   }
 
   return (
@@ -53,13 +54,13 @@ const NewTrasactionModal = ({
         <input
           type="number"
           placeholder="Valor"
-          value={value}
-          onChange={(event) => setValue(Number(event.target.value))} />
+          value={amount}
+          onChange={(event) => setAmount(Number(event.target.value))} />
         <TransactionTypesContatiner>
           <RadioBox
             type="button"
-            onClick={() => setType('deposity')}
-            isActive={type === 'deposity'}
+            onClick={() => setType('deposit')}
+            isActive={type === 'deposit'}
             activeColors="green"
           >
             <img src={incomeImg} alt="Entrada" />
